@@ -8,6 +8,11 @@ const port = 5000;
 const fs = require("fs");
 const imageModel = require("./models");
 app.use(cors());
+const {PythonShell} = require("python-shell");
+
+let options={
+  scriptPath:"C:/Users/Ubaish malik/OneDrive/Desktop/PEPE image compressor/Server",
+};
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -26,11 +31,19 @@ const upload = multer({ storage: storage });
 
 app.post("/", upload.single("testImage"), (req, res) => {
   console.log(req.body);
- 
+
+    PythonShell.run("test.py",options,(err,res)=>{
+      console.log("Runnig python from nodejs");
+      console.log("proces finished with exit code 0");
+  });
     res.status(200).json({status:true,message:"Image uploaded"})
 });
 
+app.get("/",(req,res)=>{
+  const img = "./uploads/img1compressed.jpg";
+  res.download(img);
+})
+
 app.listen(port, () => {
   console.log("server running succefully");
-  console.log("bina wjh")
 });
