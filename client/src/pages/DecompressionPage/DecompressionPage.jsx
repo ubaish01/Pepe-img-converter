@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
-import "./home.css"
+import "./DecompressionPage.css"
 import axios from "axios"
-import Loader from '../components/Loader'
+import Loader from '../../components/Loader/Loader'
 import downloadFile from "js-file-download";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-const Home = () => {
+const DecompressionPage = () => {
 
     const [loading, setLoading] = useState(false);
     const [imgUploaded, setImgUploaded] = useState(null);
@@ -77,7 +77,7 @@ const Home = () => {
     }
 
     return (
-        <div className="home">
+        <div className="DecompressionPage">
 
             <div className="container">
 
@@ -95,13 +95,16 @@ const Home = () => {
                         </label>
                         <span className='buttons'>
                             {!imgUploaded ? (<button
-                                type='submit' onClick={(event) => handleUpload(event)} className="btn">
+                                type='submit' onClick={(event) => handleUpload(event)} className="button">
                                 Upload
                             </button>)
                                 :
-                                (<button onClick={(event) => handleDownload(event,"download")} type='submit' className="btn">
+                                (
+                                <button onClick={(event) => handleDownload(event,"download")} type='submit' className="button">
                                     Download
-                                </button>)}
+                                </button>
+                                )}
+                                
 
                         </span>
                     </div>
@@ -124,4 +127,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default DecompressionPage

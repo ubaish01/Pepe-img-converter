@@ -1,0 +1,86 @@
+.CompressionPage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 89.8vh;
+    width: 90;
+    background-image: linear-gradient(rgb(150, 255, 232),rgba(9, 72, 58, 0.786));
+    /* background-image: linear-gradient(rgb(0, 255, 200),rgba(9, 103, 82, 0.786)); */
+}
+
+.container{
+    border: 2px solid rgb(9, 99, 2);
+    height: 70%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #131324;
+    color: white;
+    border-radius: 10px;
+    opacity: .9 ;
+
+
+}
+
+.input-area{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+
+
+.button{
+    display: flex;
+    background-image: linear-gradient(rgb(0, 124, 218),rgb(22, 136, 136));
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin: 3px;
+    height: 30px;
+    width: 180px;
+    border-radius: 8px;    
+    transition: 0.2s ease-in-out;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-file-upload {
+    margin: 10px auto;
+    height: 150px;
+    width: 160px;
+    border: 1px solid #ccc;
+    display: flex;
+    padding: 6px 12px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    
+}
+
+.isUploading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(80, 198, 80);
+    font-size: 12px;
+}
+
+.button:hover{
+    background-color: #7c5ecf;
+}
+
+.button:active{
+    border: none;
+    background-color: red;
+}
