@@ -5,8 +5,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const cors = require("cors");
 const port = 5000;
-const fs = require("fs");
-const imageModel = require("./models");
+// const fs = require("fs");
 app.use(cors());
 const {PythonShell} = require("python-shell");
 
@@ -30,6 +29,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post("/", upload.single("testImage"), (req, res) => {
+  console.log("I am inside the post request")
   console.log(req.body);
 
     PythonShell.run("test.py",options,(err,res)=>{

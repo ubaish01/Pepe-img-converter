@@ -4,6 +4,7 @@ import "./home.css"
 import axios from "axios"
 import Loader from '../components/Loader'
 import downloadFile from "js-file-download";
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 const Home = () => {
 
     const [loading, setLoading] = useState(false);
@@ -90,7 +91,7 @@ const Home = () => {
                     <div className="input-area">
                         <label onChange={(event) => handleInputChange(event)} className="custom-file-upload">
                             <input type="file" />
-                            select image
+                            <CameraAltIcon style={{height:"120px",width:"130px"}} />
                         </label>
                         <span className='buttons'>
                             {!imgUploaded ? (<button
