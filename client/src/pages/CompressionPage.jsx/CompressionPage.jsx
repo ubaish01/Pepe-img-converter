@@ -25,6 +25,7 @@ const CompressionPage = () => {
     const [imgName,setImgName] = useState("None");
     const [uploadImgSize,setUploadImgSize]=useState(0);
     const [downloadImgSize,setDownloadImgSize]=useState(0);
+    const [outImg,setOutImg] = useState("");
 
 
     //Handelling input changes... 
@@ -61,10 +62,24 @@ const CompressionPage = () => {
             data.append("testImage", image);
             await axios.post('http://localhost:5000/compression', data)
             .then(res => {
-                    setLoading(false);
-                    console.log(res.message);
+
                     setSuccess(true);
                     setImgUploaded(true);
+
+
+                    // Handelling auto compressing response 
+                    axios({
+                        url:'http://localhost:5000',
+                        method:'GET',
+                        responseType:'blob' 
+                    })
+                    .then(res=>{
+                        setLoading(false);
+                        const img = res.data;
+                        setOutImg(img);
+                        // console.log(res.size)
+                        setDownloadImgSize((Math.round(img.size/1024))/1000);
+                    })
                 })
                 .catch(err => {
                     setLoading(false);
@@ -79,22 +94,8 @@ const CompressionPage = () => {
         e.preventDefault();
         setLoading(true);
         setbuttonClicked("download");
-        axios({
-            url:'http://localhost:5000',
-            method:'GET',
-            responseType:'blob' 
-        })
-        .then(res=>{
-            setLoading(false);
-            const img = res.data;
-            // console.log(res.size)
-            setDownloadImgSize((Math.round(img.size/1024))/1000);
-            console.log("Downloading the images");
-            downloadFile(res.data,"Compressed.jpg");
-            console.log("upload size : ",uploadImgSize)
-            console.log("download size : ",downloadImgSize)
-        })
-
+        downloadFile(outImg,"Compressed.jpg");
+        setLoading(false);
     }
 
     return (
@@ -123,13 +124,13 @@ const CompressionPage = () => {
                             Select an image
                             </span>
                         </label>
-                        <div style={{margin:"5px 0px"}} className="selectedImg">selected image : <span style={{color:"red"}}>{imgName}</span></div>
+                        <div style={{margin:"5px 0px"}} className="selectedImg">selected image : <span style={{color:"red",fontWeight:"700"}}>{imgName}</span></div>
                         </>
                         
                         :<>
-                        <div style={{margin:"35px 0px"}} className="selectedImg">selected image : <span style={{color:"red"}}>{imgName}</span></div>
-                        <div  className="selectedImg">Size before Compression : <span style={{color:"blue"}}>{uploadImgSize}mb</span></div>
-                        <div style={{marginBottom:"10px"}}  className="selectedImg">Size after compression : <span style={{color:"blue"}}>{downloadImgSize} mb</span></div>
+                        <div style={{margin:"35px 0px"}} className="selectedImg">selected image : <span style={{color:"red",fontWeight:"700"}}>{imgName}</span></div>
+                        <div  className="selectedImg">Size before Compression : <span style={{color:"green",fontWeight:"700"}}>{uploadImgSize} mb</span></div>
+                        <div style={{marginBottom:"10px"}}  className="selectedImg">Size after compression : <span style={{color:"green",fontWeight:"700"}}>{downloadImgSize} mb</span></div>
                         </>
                         }
 
