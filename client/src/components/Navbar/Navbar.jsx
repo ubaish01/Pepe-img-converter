@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {useNavigate} from "react-router-dom";
+import "./navbar.css";
 
 const Navbar = () => {
   const [activeClass, setActiveClass] = useState("home");
@@ -28,17 +29,17 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
-            <li className={`nav-item ${activeClass === "home" ? "active" : ""}`} onClick={(e) => { handleSetActiveClass(e,"home") }}>
+            <li className="nav-item"  onClick={(e) => { handleSetActiveClass(e,"home") }}>
               <a className="nav-link" href="/home">Home <span className="sr-only">(current)</span></a>
             </li>
-            <li className={`nav-item ${activeClass === "compression" ? "active" : ""}`} onClick={(e) => {handleSetActiveClass(e,"compression") }} >
+            <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"compression") }} >
               <a className="nav-link" href="/compression">Compression</a>
             </li>
-            <li className={`nav-item ${activeClass === "decompression" ? "active" : ""}`} onClick={(e) => {handleSetActiveClass(e,"decompression") }} >
+            <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"decompression") }} >
 
               <a className="nav-link" href="/decompression">Decompression</a>
             </li>
-            <li className={`nav-item ${activeClass === "about" ? "active" : ""}`} onClick={(e) => { handleSetActiveClass(e,"about") }} >
+            <li className="nav-item"  onClick={(e) => { handleSetActiveClass(e,"about") }} >
 
               <a className="nav-link " href="/decompression" >About Us</a>
             </li>

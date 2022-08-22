@@ -5,6 +5,7 @@ import axios from "axios"
 import Loader from '../../components/Loader/Loader'
 import downloadFile from "js-file-download";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import Navbar from '../../components/Navbar/Navbar'
 const DecompressionPage = () => {
 
     const [loading, setLoading] = useState(false);
@@ -45,7 +46,7 @@ const DecompressionPage = () => {
             const fileName = image.name;
             data.append("name", fileName);
             data.append("testImage", image);
-            await axios.post('http://localhost:5000', data)
+            await axios.post('http://localhost:5000/decompression', data)
                 .then(res => {
                     console.log(res.message);
                     setSuccess(true);
@@ -77,6 +78,8 @@ const DecompressionPage = () => {
     }
 
     return (
+        <div className='decompression-container'>
+            <Navbar/>
         <div className="DecompressionPage">
 
             <div className="container">
@@ -123,6 +126,7 @@ const DecompressionPage = () => {
 
 
             </div>
+        </div>
         </div>
     )
 }

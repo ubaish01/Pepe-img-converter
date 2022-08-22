@@ -5,14 +5,26 @@ import axios from "axios"
 import Loader from '../../components/Loader/Loader'
 import downloadFile from "js-file-download";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import Button from 'react-bootstrap/Button';
+import Navbar from '../../components/Navbar/Navbar'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const CompressionPage = () => {
+    const toastOptions = {
+        position: "bottom-right",
+        autoClose: 8000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      };
 
     const [loading, setLoading] = useState(false);
     const [imgUploaded, setImgUploaded] = useState(null);
     const [image, setImage] = useState(null);
     const [buttonClicked, setbuttonClicked] = useState("");
     const [isSucces, setSuccess] = useState(null);
+    const [imgName,setImgName] = useState("None");
+    const [uploadImgSize,setUploadImgSize]=useState(0);
+    const [downloadImgSize,setDownloadImgSize]=useState(0);
 
 
     //Handelling input changes... 
@@ -20,11 +32,15 @@ const CompressionPage = () => {
         if (event.target.files && event.target.files[0]) {
             let img = event.target.files[0];
             setImage(img);
+            setImgName(img.name);
+            setUploadImgSize((Math.round(img.size/1024))/1000);
+            
         }
     }
-
-
+    
+    
     const handleUpload = async (event) => {
+        console.log(imgName);
         event.preventDefault();
         console.log("upload button clicked")  
         setbuttonClicked("upload"); 
@@ -32,27 +48,26 @@ const CompressionPage = () => {
 
         // if there is an image with post
         if (!image) {
-            alert("Please select an image first")
+            toast.error("Please select an image.", toastOptions);
             setSuccess(false);
             return ;
         } else {
 
             setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-            }, 2000);
-
+            
             const data = new FormData();
             const fileName = image.name;
             data.append("name", fileName);
             data.append("testImage", image);
-            await axios.post('http://localhost:5000', data)
-                .then(res => {
+            await axios.post('http://localhost:5000/compression', data)
+            .then(res => {
+                    setLoading(false);
                     console.log(res.message);
                     setSuccess(true);
                     setImgUploaded(true);
                 })
                 .catch(err => {
+                    setLoading(false);
                     setImgUploaded(false);
                     console.log(err);
                 })
@@ -71,13 +86,21 @@ const CompressionPage = () => {
         })
         .then(res=>{
             setLoading(false);
+            const img = res.data;
+            // console.log(res.size)
+            setDownloadImgSize((Math.round(img.size/1024))/1000);
             console.log("Downloading the images");
             downloadFile(res.data,"Compressed.jpg");
+            console.log("upload size : ",uploadImgSize)
+            console.log("download size : ",downloadImgSize)
         })
 
     }
 
     return (
+        <div className='compression-container'>
+
+            <Navbar/>
         <div className="CompressionPage">
 
             <div className="container">
@@ -90,10 +113,27 @@ const CompressionPage = () => {
                         <h3> Pepe image converter</h3>
                     </div>
                     <div className="input-area">
-                        <label onChange={(event) => handleInputChange(event)} className="custom-file-upload">
+                        
+                        
+                            
+                       {!imgUploaded ? <><label style={{display:"flex",flexDirection:"column"}}  onChange={(event) => handleInputChange(event)} className="custom-file-upload">
                             <input type="file" />
                             <CameraAltIcon style={{height:"120px",width:"130px"}} />
+                            <span style={{display:"flex",justifyContent:"center", alignItems:"center"}}>
+                            Select an image
+                            </span>
                         </label>
+                        <div style={{margin:"5px 0px"}} className="selectedImg">selected image : <span style={{color:"red"}}>{imgName}</span></div>
+                        </>
+                        
+                        :<>
+                        <div style={{margin:"35px 0px"}} className="selectedImg">selected image : <span style={{color:"red"}}>{imgName}</span></div>
+                        <div  className="selectedImg">Size before Compression : <span style={{color:"blue"}}>{uploadImgSize}mb</span></div>
+                        <div style={{marginBottom:"10px"}}  className="selectedImg">Size after compression : <span style={{color:"blue"}}>{downloadImgSize} mb</span></div>
+                        </>
+                        }
+
+
                         <span className='buttons'>
                             {!imgUploaded ? (<button
                                 type='submit' onClick={(event) => handleUpload(event)} className="button">
@@ -101,7 +141,7 @@ const CompressionPage = () => {
                             </button>)
                                 :
                                 (
-                                <button onClick={(event) => handleDownload(event,"download")} type='submit' className="button">
+                                    <button onClick={(event) => handleDownload(event,"download")} type='submit' className="button">
                                     Download
                                 </button>
                                 )}
@@ -118,13 +158,15 @@ const CompressionPage = () => {
                         {buttonClicked==="upload"?<h2>Uploading Image please wait</h2>
                         :
                         <h2>Downloading the Image please wait</h2>
-                        }
+                    }
                     </>
                 }
 
 
             </div>
         </div>
+        <ToastContainer/>
+                </div>
     )
 }
 

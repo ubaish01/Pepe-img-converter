@@ -1,6 +1,7 @@
 import React from 'react'
 import "./home.css"
 import {useNavigate} from "react-router-dom"
+import Navbar from '../../components/Navbar/Navbar';
 const img1 = "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dGVjaHxlbnwwfHwwfHw%3D&w=1000&q=80"
 const img2 = "https://i.pinimg.com/originals/29/9a/2a/299a2a93d4eb261e7302f2dac96ba243.jpg";
 const sih_logo = "https://mir-s3-cdn-cf.behance.net/projects/404/beeaf1139339175.Y3JvcCw4MDgsNjMyLDAsMA.png"
@@ -14,7 +15,9 @@ const Home = () => {
         else navigate("/decompression")
     }
   return (
-  <div className="home">
+    <div className='home-container'>
+    <Navbar/>
+    <div className="home">
     <div className="info-container">
             <img className='logo' src={sih_logo} alt="" />  
     <h1>Welcome to pepe image converter</h1>
@@ -32,6 +35,7 @@ const Home = () => {
 
     </div>
   </div>
+    </div>
   
   )
 }

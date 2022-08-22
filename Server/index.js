@@ -1,7 +1,7 @@
 const express = require("express");
+const fs = require("fs");
 const app = express();
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const multer = require("multer");
 const cors = require("cors");
 const port = 5000;
@@ -22,21 +22,28 @@ const storage = multer.diskStorage({
     cb(null, "uploads");
   },
   filename: (req, file, cb) => {
-    cb(null, "img1.jpg");
+    cb(null,"img1.jpg");
   },
 });
 
 const upload = multer({ storage: storage });
 
-app.post("/", upload.single("testImage"), (req, res) => {
+app.post("/compression", upload.single("testImage"), (req, res) => {
   console.log("I am inside the post request")
   console.log(req.body);
+ 
 
-    PythonShell.run("test.py",options,(err,res)=>{
+var stats = fs.lstatSync('./uploads/img1.jpg');
+var out = {};
+out.isDir = stats.isDirectory(); 
+out.size = stats.size;
+console.log(Math.round(out.size/1048));
+
+    PythonShell.run("compression.py",options,(err,res)=>{
       console.log("Runnig python from nodejs");
       console.log("proces finished with exit code 0");
   });
-    res.status(200).json({status:true,message:"Image uploaded"})
+    res.status(200).json({status:true,filename:"Image uploaded"})
 });
 
 app.get("/",(req,res)=>{
