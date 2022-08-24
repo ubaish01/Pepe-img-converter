@@ -35,7 +35,6 @@
     opacity: .9 ;
     transition: 0.2s ease-in-out;
 
-
 }
 
 .input-area{
@@ -98,3 +97,64 @@ input[type="file"] {
     border: none;
     background-color: red;
 }
+
+.preview-container{
+    width: calc(100% - 253px);
+    position: relative;
+    margin: 0px 116px;
+    margin-top: 60px;
+    font-weight: 700;
+}
+#slider-input{
+    width: calc(100% + 40px);
+    position: absolute;
+    left: -21px;
+    top: -6px;
+    -webkit-appearance: none;
+    outline: none;
+}
+#slider-input::-webkit-slider-runnable-track{
+    height: 0px;
+}
+#slider-input::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    width: 0px;
+    height: 0px;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #6165F8;
+}
+.compressed,
+.original{
+    position: absolute;
+    top: -25px;
+    margin-left: 10px;
+    color: white;
+}
+.original{
+    right: 10px;
+}
+.top{
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    width: 300px;
+    border-right: 2px solid white;
+}
+.top img{
+    min-width: 600px;
+}
+.bottom{
+    width: 100%;
+    height: 100%;
+}
+.bottom img{
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
+/* .output,
+.progress,
+.preview-container{
+    display: none;
+} */

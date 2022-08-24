@@ -7,10 +7,10 @@ const cors = require("cors");
 const port = 5000;
 // const fs = require("fs");
 app.use(cors());
-const {PythonShell} = require("python-shell");
+const { PythonShell } = require("python-shell");
 
-let options={
-  scriptPath:"C:/Users/Ubaish malik/OneDrive/Desktop/PEPE image compressor/Server",
+let options = {
+  scriptPath: "C:/Users/Ubaish malik/OneDrive/Desktop/PEPE image compressor/Server",
 };
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,35 +22,75 @@ const storage = multer.diskStorage({
     cb(null, "uploads");
   },
   filename: (req, file, cb) => {
-    cb(null,"img1.jpg");
+    cb(null, file.originalname);
   },
 });
 
 const upload = multer({ storage: storage });
 
+
+// <-----------------COMPRESSION ROUTE START HERE------------------------>
 app.post("/compression", upload.single("testImage"), (req, res) => {
-  console.log("I am inside the post request")
   console.log(req.body);
- 
+  console.log(req.body.name);
 
-var stats = fs.lstatSync('./uploads/img1.jpg');
-var out = {};
-out.isDir = stats.isDirectory(); 
-out.size = stats.size;
-console.log(Math.round(out.size/1048));
+  if(req.body.ext==="CR2")
+  {
+    fs.rename(`uploads/${req.body.name}`,"uploads/img1.CR2",(err)=>{
+      if(err) console.log(err.message);
+      else{
 
-    PythonShell.run("compression.py",options,(err,res)=>{
-      console.log("Runnig python from nodejs");
-      console.log("proces finished with exit code 0");
-  });
-    res.status(200).json({status:true,filename:"Image uploaded"})
+        PythonShell.run("cr2Tojpg.py",options,(err,res)=>{
+          console.log("Converting cr2 to jpg");
+        })
+
+      }
+      
+    });
+  }
+  else
+  {
+    
+    fs.rename(`uploads/${req.body.name}`,"uploads/img1.jpg",(err)=>{
+      if(err) console.log(err.message);
+      
+    });
+  }
+  
+  
+  
+  PythonShell.run("compression.py",options,(err,res)=>{
+  })
+  
+  res.status(200).json({status:true,message:"Image uploaded"})
+  
 });
 
-app.get("/",(req,res)=>{
-  const img = "./uploads/img1compressed.jpg";
+app.get("/", (req, res) => {
+  const img = "./uploads/imgcompressed.jpg";
   res.download(img);
 })
+  // <-----------------COMPRESSION ROUTE END HERE------------------------>
+
+// <------------------COMPARE ROUTE START HERE--------------------->
+  app.post("/compare",upload.single("compareImg"),(req,res)=>{
+    fs.rename(`uploads/${req.body.name}`,"uploads/compareImg1.jpg",(err)=>{
+      if(err) console.log(err.message);
+      
+    });
+
+
+  })
+// <------------------COMPARE ROUTE END HERE--------------------->
+
+
+
+
+
+
+
 
 app.listen(port, () => {
   console.log("server running succefully");
 });
+
