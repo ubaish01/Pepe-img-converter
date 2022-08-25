@@ -33,29 +33,12 @@ const upload = multer({ storage: storage });
 app.post("/compression", upload.single("testImage"), (req, res) => {
   console.log(req.body);
   console.log(req.body.name);
-
-  if(req.body.ext==="CR2")
-  {
-    fs.rename(`uploads/${req.body.name}`,"uploads/img1.CR2",(err)=>{
-      if(err) console.log(err.message);
-      else{
-
-        PythonShell.run("cr2Tojpg.py",options,(err,res)=>{
-          console.log("Converting cr2 to jpg");
-        })
-
-      }
-      
-    });
-  }
-  else
-  {
     
     fs.rename(`uploads/${req.body.name}`,"uploads/img1.jpg",(err)=>{
       if(err) console.log(err.message);
       
     });
-  }
+  
   
   
   
@@ -63,9 +46,8 @@ app.post("/compression", upload.single("testImage"), (req, res) => {
   })
   
   
-  setTimeout(() => {
     res.status(200).json({status:true,message:"Image uploaded"})
-  }, 1000);
+  
   
 });
 
@@ -76,11 +58,25 @@ app.get("/", (req, res) => {
   // <-----------------COMPRESSION ROUTE END HERE------------------------>
 
 // <------------------COMPARE ROUTE START HERE--------------------->
-  app.post("/compare",upload.single("compareImg"),(req,res)=>{
-    fs.rename(`uploads/${req.body.name}`,"uploads/compareImg1.jpg",(err)=>{
-      if(err) console.log(err.message);
+  app.post("/compare",upload.single("testImage"),(req,res)=>{
+
+    console.log(req.body);
+    if(req.body.type==="compressed")
+    {
+
+      fs.rename(`uploads/${req.body.name}`,"uploads/compressedImg.jpg",(err)=>{
+        if(err) console.log(err.message);
+        else res.send("Img uploaded")
+        
+      });
+    }else{
+      fs.rename(`uploads/${req.body.name}`,"uploads/normalImg.jpg",(err)=>{
+        if(err) console.log(err.message);
+        else res.send("Img uploaded")
+        
+      });
       
-    });
+    }
 
 
   })

@@ -38,9 +38,6 @@ const DecompressionPage = () => {
         } else {
 
             setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-            }, 2000);
 
             const data = new FormData();
             const fileName = image.name;
