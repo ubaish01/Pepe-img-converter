@@ -42,4 +42,4 @@ elif( width > height):
     hsize = int((float(img2.size[1])*float(wpercent)))
     img2 =img2.resize((width,hsize),PIL.Image.ANTIALIAS) #resize
     #img=img.rotate(angle=90,expand=True)
-    img2.save('./uploads/imgCompressed.jpg') 
+    img2.save('./uploads/imgCompressed.jpg')

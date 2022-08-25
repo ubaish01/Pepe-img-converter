@@ -32,17 +32,17 @@ const Navbar = () => {
             <li className="nav-item"  onClick={(e) => { handleSetActiveClass(e,"home") }}>
               <a className="nav-link" href="/home">Home <span className="sr-only">(current)</span></a>
             </li>
-            <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"compression") }} >
-              <a className="nav-link" href="/compression">Compression</a>
+            <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"image") }} >
+              <a className="nav-link" href="/image">Image Compression</a>
             </li>
-            <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"decompression") }} >
+            {/* <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"document") }} >
 
-              <a className="nav-link" href="/decompression">Decompression</a>
-            </li>
-            <li className="nav-item"  onClick={(e) => { handleSetActiveClass(e,"about") }} >
+              <a className="nav-link" href="/decompression">Document Compression</a>
+            </li> */}
+            {/* <li className="nav-item"  onClick={(e) => { handleSetActiveClass(e,"about") }} >
 
               <a className="nav-link " href="/decompression" >About Us</a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>

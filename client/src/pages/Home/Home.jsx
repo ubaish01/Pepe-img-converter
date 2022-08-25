@@ -10,9 +10,7 @@ const sih_logo = "https://mir-s3-cdn-cf.behance.net/projects/404/beeaf1139339175
 const Home = () => {
     const navigate = useNavigate();
     const handleClick = (e,name)=>{
-        e.preventDefault();
-        if(name==="compress") navigate("/compression")
-        else navigate("/decompression")
+        navigate(name);
     }
   return (
     <div className='home-container'>
@@ -20,16 +18,19 @@ const Home = () => {
     <div className="home">
     <div className="info-container">
             <img className='logo' src={sih_logo} alt="" />  
-    <h1>Welcome to pepe image converter</h1>
+    <h1 >Welcome to Pepe  Compresser</h1>
     <div className="app-info">
        <div>
-     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut excepturi iste recusandae placeat facere nobis possimus eum eveniet quidem nisi, vero incidunt voluptate nemo cumque natus quod magnam ex. Delectus, deleniti saepe, odit sequi ea excepturi nam culpa, provident distinctio praesentium reprehenderit. Quam, laudantium. Quas rem exercitationem molestias pariatur minus!
+     Pepe compression is a web based platform that compress high resolution photographs maintaining the quality at the same time. 
      </div> 
         </div>
         <div className="buttons">
+
+
+
             <span>
-                <button className="btn btn-info" onClick={(e)=>handleClick(e,"compress")}>Compression</button>
-                <button className="btn btn-danger" onClick={(e)=>handleClick(e,"decompress")}>Decompresion</button>
+                <button className="btn btn-info" onClick={(e)=>handleClick(e,"image")}>Go to Compression page</button>
+                {/* <button className="btn btn-danger" onClick={(e)=>handleClick(e,"document")}>Document Compression</button> */}
             </span>
         </div>
 

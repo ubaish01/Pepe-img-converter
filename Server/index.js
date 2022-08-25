@@ -62,7 +62,10 @@ app.post("/compression", upload.single("testImage"), (req, res) => {
   PythonShell.run("compression.py",options,(err,res)=>{
   })
   
-  res.status(200).json({status:true,message:"Image uploaded"})
+  
+  setTimeout(() => {
+    res.status(200).json({status:true,message:"Image uploaded"})
+  }, 1000);
   
 });
 
@@ -82,6 +85,24 @@ app.get("/", (req, res) => {
 
   })
 // <------------------COMPARE ROUTE END HERE--------------------->
+
+
+// <------------------DOCUMENT ROUTE START HERE--------------------->
+
+app.post("/document", upload.single("testFile"), (req, res)=>{
+  fs.rename(`uploads/${req.body.name}`,"uploads/originalFile.pdf",(err)=>{
+    if(err) console.log(err.message);
+    else
+    {
+      res.send("File Uploaded")
+    }
+    
+  });
+
+})
+
+// <------------------DOCUMENT ROUTE END HERE--------------------->
+
 
 
 

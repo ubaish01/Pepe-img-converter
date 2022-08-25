@@ -114,15 +114,15 @@ const CompressionPage = () => {
 
             <Navbar />
             <div className="CompressionPage">
+            <h3>Compress your images here</h3>
 
                 <div className="container">
 
                     {!loading ? <>
                         <div className="team-">
-                            <h3>Team : WE-6</h3>
                         </div>
                         <div className="app-name">
-                            <h3> Pepe image converter</h3>
+                            <h3> Pepe Compressor by We-6</h3>
                         </div>
                         <div className="input-area">
 
