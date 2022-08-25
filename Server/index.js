@@ -42,7 +42,7 @@ app.post("/compression", upload.single("testImage"), (req, res) => {
   
   
   
-  PythonShell.run("compression.py",options,(err,res)=>{
+  PythonShell.run("Server/python-files/compression.py",options,(err,res)=>{
   })
   
   
