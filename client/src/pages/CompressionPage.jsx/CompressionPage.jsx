@@ -122,7 +122,7 @@ const CompressionPage = () => {
                         <div className="team">
                         </div>
                         <div className="app-name">
-                            <h3> Pepe Compressor by We-6</h3>
+                            <h3>V-6 Compressor</h3>
                         </div>
                         <div className="input-area">
 

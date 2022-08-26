@@ -18,7 +18,7 @@ const Home = () => {
     <div className="home">
     <div className="info-container">
             <img className='logo' src={sih_logo} alt="" />  
-    <h1 >Welcome to Pepe  Compresser</h1>
+    <h1 >Welcome to V-6 Compressor</h1>
     <div className="app-info">
        <div>
      Pepe compression is a web based platform that compress high resolution photographs and documents maintaining the quality at the same time. 
