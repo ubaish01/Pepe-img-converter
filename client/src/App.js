@@ -5,6 +5,7 @@ import AboutUs from "./pages/AboutUs/AboutUs";
 // import DecompressionPage from "./pages/DecompressionPage/DecompressionPage";
 // import Compare from "./pages/Compare/Compare";
 import DocumentCompression from "./pages/DocumentCompression/DocumentCompression";
+import BulkCompression from "./pages/bulkCompression/BulkCompression";
 
 
 
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         {/* <Route  path="/compare" element={<Compare/>} /> */}
           <Route exact path="/" element={<Home/>} />
+          <Route exact path="/bulkCompression" element={<BulkCompression/>} />
           <Route  path="/image" element={<CompressionPage/>} />
           <Route  path="/about" element={<AboutUs/>} />
           <Route  path="/document" element={<DocumentCompression/>} />

@@ -119,7 +119,7 @@ const CompressionPage = () => {
                 <div className="container">
 
                     {!loading ? <>
-                        <div className="team-">
+                        <div className="team">
                         </div>
                         <div className="app-name">
                             <h3> Pepe Compressor by We-6</h3>

@@ -4,6 +4,9 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import Navbar from '../../components/Navbar/Navbar';
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios"
+import Loader from '../../components/Loader/Loader';
+
+import downloadFile from "js-file-download";
 
 
 const DocumentCompression = () => {
@@ -16,19 +19,26 @@ const DocumentCompression = () => {
         theme: "dark",
     };
 
-    const [file,setFile] = useState(null);
-    const [fileName,setFileName] = useState(null);
-    const [uploadFileSize,setUploadFileSize] = useState(0);
-    const [buttonClicked,setbuttonClicked] = useState("")
+    const [fileName, setFileName] = useState(null);
+    const [uploadFileSize, setUploadFileSize] = useState(0);
+    const [buttonClicked, setbuttonClicked] = useState("")
+    const [file, setFile] = useState("");
+    const [imgUploaded, setImgUploaded] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [download,setDownload] = useState(false);
+    const [downloadFileSize,setDownloadFileSize] = useState(0)
 
 
     //Handelling input changes... 
     const handleInputChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             let doc = event.target.files[0];
-            setUploadFileSize((Math.round(doc.size / 1024)) / 1024);
             setFile(doc);
+            setUploadFileSize((Math.round(doc.size / 1024)) / 1024);
+            console.log("upload clicked");
             setFileName(doc.name);
+            console.log(doc);
 
         }
     }
@@ -40,7 +50,7 @@ const DocumentCompression = () => {
         setbuttonClicked("upload");
 
 
-        // if there is an image with post
+        // if there is a file  with post
         if (!file) {
             toast.error("Please select an file.", toastOptions);
             return;
@@ -59,16 +69,16 @@ const DocumentCompression = () => {
             axios.post('http://localhost:5000/document', data)
                 .then(res => {
 
-                    // setSuccess(true);
-                    // setImgUploaded(true);
-                    // setLoading(false);
+                    setSuccess(true);
+                    setImgUploaded(true);
+                    setLoading(false);
                     console.log(res);
 
                 })
                 .catch(err => {
                     console.log(err.message);
-                    // setLoading(false);
-                    // setImgUploaded(false);
+                    setLoading(false);
+                    setImgUploaded(false);
                     // console.log(err);
                 })
         }
@@ -76,28 +86,118 @@ const DocumentCompression = () => {
 
     }
 
-    return (
-        <>
-            <Navbar/>
-            <div className="document-page">
-                <h3>Compress your Documents here</h3>
-                <div className="document-container">
-                    <div className="document-input-container">
-                    <label className="document-custom-file-upload" onChange={(event) => handleInputChange(event)} >
-                        <input type="file" />
-                        <PostAddIcon style={{ height: "150px", width: "180px" }} />
-                        <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            Select Document
+
+    const handleDownload = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setbuttonClicked("download");
+
+
+        // Handelling auto compressing response 
+        axios({
+            url: 'http://localhost:5000/document',
+            method: 'GET',
+            responseType: 'blob'
+        })
+            .then(res => {
+                setDownload(true);
+                setLoading(false);
+                const pdf = res.data;
+                console.log(pdf.name);
+                // console.log(res.size)
+                setDownloadFileSize((Math.round(pdf.size / 1024)) / 1000);
+                downloadFile(res.data, "Compressed.pdf");
+                setLoading(false);
+            })
+    }
+
+
+
+return (
+    <div className='compression-container'>
+
+        <Navbar />
+        <div className="CompressionPage">
+        <h3>Compress your documents here</h3>
+
+            <div className="container">
+
+                {!loading ? <>
+                    
+                    <div className="input-area">
+
+
+
+                        {!imgUploaded ? <><label style={{ display: "flex", flexDirection: "column" }} onChange={(event) => handleInputChange(event)} className="custom-file-upload">
+                            <input type="file" />
+                            <PostAddIcon style={{ height: "120px", width: "130px" }} />
+                            <span style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                Select a pdf file
+                            </span>
+                        </label>
+                            {fileName ?
+                                <div style={{ margin: "5px 0px" }} className="selectedImg">selected image : <span style={{ color: "red", fontWeight: "700" }}>{fileName}</span></div>
+                                : ""
+                            }</>
+
+                            : <>
+                                <div style={{ margin: "35px 0px" }} className="selectedImg">selected image : <span style={{ color: "red", fontWeight: "700" }}>{fileName}</span></div>
+                                {download?
+                                <>
+                                <div className="selectedImg">Size before Compression : <span style={{ color: "green", fontWeight: "700" }}>{uploadFileSize} mb</span></div>
+                                <div style={{ marginBottom: "10px" }} className="selectedImg">Size after compression : <span style={{ color: "green", fontWeight: "700" }}>{downloadFileSize} mb</span></div>
+                                </> : ""
+                                }
+                            </>
+                        }
+
+
+                        <span className='buttons'>
+                            {!imgUploaded ? (<button
+                                type='submit' onClick={(event) => handleUpload(event)} className="button">
+                                Upload
+                            </button>)
+                                :
+                                (
+                                    <button onClick={(event) => handleDownload(event, "download")} type='submit' className="button">
+                                        Download
+                                    </button>
+                                )}
+
+
                         </span>
-                    </label>
-                    <div style={{ margin: "5px 0px" }} className="selectedImg">selected image : <span style={{ color: "red", fontWeight: "700" }}>{fileName}</span></div>
-
                     </div>
-                <div className="button-div"><button className='button' style={{width:"15rem"}} onClick={(e)=>handleUpload(e)}>Upload</button></div>
-                </div>
-            </div>
-        </>
-    )
-}
 
+                </>
+                    :
+                    <>
+                        <Loader />
+
+                        {buttonClicked === "upload" ? <h2>Uploading Image please wait</h2>
+                            :
+                            <h2>Downloading the Image please wait</h2>
+                        }
+                    </>
+                }
+
+
+            </div>
+        </div>
+
+        {/* <div className="preview-container">
+            <input type="range" id="slider-input" min="0" max="100" step="any" />
+            <div className="compressed">Compressed</div>
+            <div className="original">Original</div>
+            <div className="bottom">
+                <img src="" alt="" />
+            </div>
+            <div class="top">
+                <img src="" alt="" />
+            </div>
+        </div> */}
+
+        <ToastContainer />
+    </div>
+)
+}
 export default DocumentCompression

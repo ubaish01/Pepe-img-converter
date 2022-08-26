@@ -21,7 +21,7 @@ const Home = () => {
     <h1 >Welcome to Pepe  Compresser</h1>
     <div className="app-info">
        <div>
-     Pepe compression is a web based platform that compress high resolution photographs maintaining the quality at the same time. 
+     Pepe compression is a web based platform that compress high resolution photographs and documents maintaining the quality at the same time. 
      </div> 
         </div>
         <div className="buttons">
@@ -29,8 +29,9 @@ const Home = () => {
 
 
             <span>
-                <button className="btn btn-info" onClick={(e)=>handleClick(e,"image")}>Go to Compression page</button>
-                {/* <button className="btn btn-danger" onClick={(e)=>handleClick(e,"document")}>Document Compression</button> */}
+                <button style={{fontWeight:"700"}} className="btn btn-info" onClick={(e)=>handleClick(e,"image")}>Image Compression</button>
+                <button style={{fontWeight:"700"}} className="btn btn-danger" onClick={(e)=>handleClick(e,"document")}>Document Compression</button>
+                <button style={{fontWeight:"700"}} className="btn btn-info" onClick={(e)=>handleClick(e,"document")}>Bulk Compression</button>
             </span>
         </div>
 

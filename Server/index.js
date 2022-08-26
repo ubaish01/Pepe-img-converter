@@ -4,6 +4,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const cors = require("cors");
+// const pynode = require('@fridgerator/pynode');
+// pynode.startInterpreter();
+// pynode.appendSysPath('./');
+// pynode.appendSysPath('./some/other/folder/with/python/modules');
 const AdmZip = require("adm-zip");
 const port = 5000;
 app.use(cors());
@@ -86,20 +90,47 @@ app.get("/", (req, res) => {
 
 // <------------------DOCUMENT ROUTE START HERE--------------------->
 
-app.post("/document", upload.single("testFile"), (req, res)=>{
-  fs.rename(`uploads/${req.body.name}`,"uploads/originalFile.pdf",(err)=>{
-    if(err) console.log(err.message);
-    else
-    {
-      res.send("File Uploaded")
-    }
+// app.post("/document", upload.single("testFile"), (req, res)=>{
+//   console.log(req.body.name);
 
+//     fs.rename(`uploads/${req.body.name}`,"uploads/docs/originalFile.pdf",(err)=>{
+//       if(err) return console.log(err.message);
+//       else console.log("working fine");
 
-    // TO BE CONTINUED...
+//   });
+
     
-  });
+//     PythonShell.run("docs_compressor.py",options,(err,res)=>{
 
-})
+//   }) 
+  
+//   res.send("File Uploaded")
+
+// })
+app.post("/document", upload.single("testFile"), (req, res) => {
+  console.log(req.body);
+    
+    fs.rename(`uploads/${req.body.name}`,"uploads/docs/originalFile.pdf",(err)=>{
+      if(err) console.log(err.message);
+      
+    });
+
+    app.get("/document", (req, res) => {
+      const pdf = "./uploads/docs/output.pdf";
+      res.download(pdf);
+    })
+  
+  
+  
+  
+  PythonShell.run("docs_compressor.py",options,(err,res)=>{
+  })  
+  
+  
+    res.status(200).json({status:true,message:"pdf compressed"});
+  
+  
+});
 
 // <------------------DOCUMENT ROUTE END HERE--------------------->
 
@@ -143,21 +174,29 @@ app.post("/bulk-images", upload.single("testFile"), (req, res)=>{
     
     
     extractArchive("./bulk-data/zip/input.zip"); //extract to a folder
-    PythonShell.run("bulkImgCompression.py",options,(err,res)=>{
-      console.log("Bulkby is working");
-    })  //Compression the whole directory
-    // createZipArchive();
+      PythonShell.run("bulkImgCompression.py",options,(err,res)=>{
+        console.log("Bulkby is working");
+      })  //Compression the whole directory
+   
 
     
     
     
-      // res.send(req.body);
+      res.send(req.body);
 
 
     // TO BE CONTINUED...
     
   });
 
+})
+
+app.get("/bulk-images",(req,res)=>{
+  createZipArchive();
+  const img = "test.zip";
+  res.download(img);
+
+  
 })
 
 

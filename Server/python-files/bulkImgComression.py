@@ -7,7 +7,7 @@ import cv2
 
 #width = 2000
 source_dir = 'Server/input_extracted/1'
-destination_dir = 'Server/bulk-data/input'
+destination_dir = 'Server/bulk-data/output'
 
 
 def resize_pic(old_pic,new_pic):#,width):
@@ -32,6 +32,7 @@ def resize_pic(old_pic,new_pic):#,width):
         hsize = int((float(img.size[1])*float(wpercent)))
         img =img.resize((width,hsize),PIL.Image.ANTIALIAS)
         img.save(new_pic)
+        # img.save('./server/bulk-data/output/imgCompressed.jpg')
         
 
 def entire_directory(source_dir,destination_dir):#,width):

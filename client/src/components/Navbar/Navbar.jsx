@@ -35,14 +35,14 @@ const Navbar = () => {
             <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"image") }} >
               <a className="nav-link" href="/image">Image Compression</a>
             </li>
-            {/* <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"document") }} >
+            <li className="nav-item" onClick={(e) => {handleSetActiveClass(e,"document") }} >
 
               <a className="nav-link" href="/decompression">Document Compression</a>
-            </li> */}
-            {/* <li className="nav-item"  onClick={(e) => { handleSetActiveClass(e,"about") }} >
+            </li>
+            <li className="nav-item"  onClick={(e) => { handleSetActiveClass(e,"bulkCompression") }} >
 
-              <a className="nav-link " href="/decompression" >About Us</a>
-            </li> */}
+              <a className="nav-link " href="/decompression" >Bulk Compression</a>
+            </li>
           </ul>
         </div>
       </nav>
