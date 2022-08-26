@@ -4,13 +4,14 @@ const app = express();
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const cors = require("cors");
+const AdmZip = require("adm-zip");
 const port = 5000;
-// const fs = require("fs");
 app.use(cors());
+const path = require("path");
 const { PythonShell } = require("python-shell");
 
 let options = {
-  scriptPath: "C:/Users/Ubaish malik/OneDrive/Desktop/PEPE image compressor/Server",
+  scriptPath: "C:/Users/Ubaish malik/OneDrive/Desktop/PEPE image compressor/Server/python-files",
 };
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,7 +30,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-// <-----------------COMPRESSION ROUTE START HERE------------------------>
+// <-----------------SINGLE IMG COMPRESSION ROUTE START HERE------------------------>
 app.post("/compression", upload.single("testImage"), (req, res) => {
   console.log(req.body);
   console.log(req.body.name);
@@ -42,8 +43,8 @@ app.post("/compression", upload.single("testImage"), (req, res) => {
   
   
   
-  PythonShell.run("Server/python-files/compression.py",options,(err,res)=>{
-  })
+  PythonShell.run("compression.py",options,(err,res)=>{
+  })  
   
   
     res.status(200).json({status:true,message:"Image uploaded"})
@@ -55,7 +56,9 @@ app.get("/", (req, res) => {
   const img = "./uploads/imgcompressed.jpg";
   res.download(img);
 })
-  // <-----------------COMPRESSION ROUTE END HERE------------------------>
+  // <-----------------SINGLE IMG COMPRESSION ROUTE END HERE------------------------>
+
+
 
 // <------------------COMPARE ROUTE START HERE--------------------->
   app.post("/compare",upload.single("testImage"),(req,res)=>{
@@ -77,8 +80,6 @@ app.get("/", (req, res) => {
       });
       
     }
-
-
   })
 // <------------------COMPARE ROUTE END HERE--------------------->
 
@@ -92,6 +93,9 @@ app.post("/document", upload.single("testFile"), (req, res)=>{
     {
       res.send("File Uploaded")
     }
+
+
+    // TO BE CONTINUED...
     
   });
 
@@ -99,7 +103,66 @@ app.post("/document", upload.single("testFile"), (req, res)=>{
 
 // <------------------DOCUMENT ROUTE END HERE--------------------->
 
+//<------FOLDER TO ZIP CONVERSION START HERE----------------->
 
+
+async function createZipArchive() {
+  try {
+    const zip = new AdmZip();
+    const outputFile = "test.zip";
+    zip.addLocalFolder("./bulk-data/output");
+    zip.writeZip(outputFile);
+    console.log(`Created ${outputFile} successfully`);
+  } catch (e) {
+    console.log(`Something went wrong. ${e}`);
+  }
+}
+
+// createZipArchive();
+
+//<------FOLDER TO ZIP CONVERSION END HERE----------------->
+
+//<------ZIP TO FOLDER CONVERSION START HERE----------------->
+async function extractArchive(filepath) {
+  try {
+    const zip = new AdmZip(filepath);
+    const outputDir = `${path.parse(filepath).name}_extracted`;
+    zip.extractAllTo(outputDir);
+    
+    console.log(`Extracted to "${outputDir}" successfully`);
+  } catch (e) {
+    console.log(`Something went wrong. ${e}`);
+  }
+}
+
+//<------ZIP TO FOLDER CONVERSION END HERE----------------->
+
+app.post("/bulk-images", upload.single("testFile"), (req, res)=>{
+  fs.rename(`uploads/${req.body.name}`,"./bulk-data/zip/input.zip",(err)=>{
+    if(err) console.log(err.message);
+    
+    
+    extractArchive("./bulk-data/zip/input.zip"); //extract to a folder
+    PythonShell.run("bulkImgCompression.py",options,(err,res)=>{
+      console.log("Bulkby is working");
+    })  //Compression the whole directory
+    // createZipArchive();
+
+    
+    
+    
+      // res.send(req.body);
+
+
+    // TO BE CONTINUED...
+    
+  });
+
+})
+
+
+
+// <------------------------BULK IMG COMPRESSING---------------------------->
 
 
 
